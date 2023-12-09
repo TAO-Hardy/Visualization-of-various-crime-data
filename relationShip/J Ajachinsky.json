@@ -1,0 +1,17 @@
+{  
+"nodes":[  
+{ "name": "J Ajachinsky"   , "image" : "J Ajachinsky.png" },  
+{ "name": "D Ajachinsky"   , "image" : "D Ajachinsky.png" },  
+{ "name": "D Cobo"   , "image" : "D Cobo.png" },  
+{ "name": "S Ajachinsky" , "image" : "S Ajachinsky.png" },
+{ "name": "Unknown1"   , "image" : "unknown.png" },  
+{ "name": "Unknown2"   , "image" : "unknown.png" }
+],  
+"edges":[  
+{ "source": 0 , "target": 1 , "relation":"2" },  
+{ "source": 0 , "target": 2 , "relation":"5" },  
+{ "source": 0 , "target": 3 , "relation":"6" },
+{ "source": 0 , "target": 4 , "relation":"1" },  
+{ "source": 0 , "target": 5 , "relation":"1" }
+]  
+}  

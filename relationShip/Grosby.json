@@ -1,0 +1,23 @@
+{  
+"nodes":[  
+{ "name": "Grosby"   , "image" : "Grosby.png" }, 
+{ "name": "Bonsignour"   , "image" : "Bonsignour.png" },  
+{ "name": "David"   , "image" : "Mr.x.David.png" },  
+{ "name": "Dean White, Atlanta Holdings" , "image" : "Dean White, Atlanta Holdings.png" },
+{ "name": "Garlica"   , "image" : "Garlica.png" },  
+{ "name": "Grosby home"   , "image" : "Grosby home.png" },
+{ "name": "Perrin" , "image" : "Perrin.png" },
+{ "name": "Ricord"   , "image" : "Ricord.png" },
+{ "name": "Tood Smith, Atlanta Holdings"   , "image" : "Tood Smith, Atlanta Holdings.png" }
+],  
+"edges":[  
+{ "source": 0 , "target": 1 , "relation":"1" },  
+{ "source": 0 , "target": 2 , "relation":"1" },  
+{ "source": 0 , "target": 3 , "relation":"1" },
+{ "source": 0 , "target": 4 , "relation":"4" },  
+{ "source": 0 , "target": 5 , "relation":"1" },
+{ "source": 0 , "target": 6 , "relation":"1" },
+{ "source": 0 , "target": 7 , "relation":"5" },  
+{ "source": 0 , "target": 8 , "relation":"1" }
+]  
+}  

@@ -1,0 +1,19 @@
+{  
+"nodes":[  
+{ "name": "Sarti"   , "image" : "Sarti.png" }, 
+{ "name": "Bertz Van Rental"   , "image" : "Bertz Van Rental.png" },  
+{ "name": "Mr.x.David"   , "image" : "Mr.x.David.png" },  
+{ "name": "Perrin" , "image" : "Perrin.png" },
+{ "name": "Unknown1"   , "image" : "unknown.png" },
+{ "name": "Unknown2"   , "image" : "unknown.png" },
+{ "name": "Unknown3"   , "image" : "unknown.png" }
+],  
+"edges":[  
+{ "source": 0 , "target": 1 , "relation":"1" },  
+{ "source": 0 , "target": 2 , "relation":"9" },  
+{ "source": 0 , "target": 3 , "relation":"1" },
+{ "source": 0 , "target": 4 , "relation":"1" },  
+{ "source": 0 , "target": 5 , "relation":"2" },
+{ "source": 0 , "target": 6 , "relation":"1" }
+]  
+}  

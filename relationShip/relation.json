@@ -1,0 +1,21 @@
+{  
+"nodes":[  
+{ "name": "Calabrese"   , "image" : "Calabrese.png" },  
+{ "name": "David PICO"   , "image" : "David PICO.png" },  
+{ "name": "Denise AJACHINSKY"   , "image" : "Denise AJACHINSKY.png" },  
+{ "name": "Jennifer GARLICA" , "image" : "Jennifer GARLICA.png" },
+{ "name": "Calabrese"   , "image" : "Calabrese.png" },  
+{ "name": "David PICO"   , "image" : "David PICO.png" },  
+{ "name": "Denise AJACHINSKY"   , "image" : "Denise AJACHINSKY.png" },  
+{ "name": "Jennifer GARLICA" , "image" : "Jennifer GARLICA.png" }
+],  
+"edges":[  
+{ "source": 0 , "target": 1 , "relation":"friends" },  
+{ "source": 0 , "target": 2 , "relation":"friends" },  
+{ "source": 0 , "target": 3 , "relation":"friends" },
+{ "source": 0 , "target": 4 , "relation":"friends" },  
+{ "source": 0 , "target": 5 , "relation":"friends" },  
+{ "source": 0 , "target": 6 , "relation":"friends" }, 
+{ "source": 0 , "target": 7 , "relation":"friends" } 
+]  
+}  

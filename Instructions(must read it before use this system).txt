@@ -1,0 +1,11 @@
+Please use the operation platform to operate the system. WebStorm operation platform is recommended.
+Open the running "index.html" file directly from the operating platform, and other files and data can be invoked in the "index.html" page.
+
+index.html--basic map;
+
+div.html--Results of analysis;
+otherphonerecord.html--other phone record;
+duizhan.html--account sevice;
+Info.html--other information;
+zcInfo/car rental.html--Rental information;
+relationShip/relationship.html--phone relationship;

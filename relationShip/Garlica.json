@@ -1,0 +1,17 @@
+{  
+"nodes":[  
+{ "name": "Garlica"   , "image" : "Garlica.png" },  
+{ "name": "Angeletti"   , "image" : "Angeletti.png" },  
+{ "name": "Grosby"   , "image" : "Grosby.png" },  
+{ "name": "Ricord" , "image" : "Ricord.png" },
+{ "name": "Sarti"   , "image" : "Sarti.png" },  
+{ "name": "Unknown1"   , "image" : "unknown.png" }
+],  
+"edges":[  
+{ "source": 0 , "target": 1 , "relation":"1" },  
+{ "source": 0 , "target": 2 , "relation":"4" },  
+{ "source": 0 , "target": 3 , "relation":"3" },
+{ "source": 0 , "target": 4 , "relation":"4" },  
+{ "source": 0 , "target": 5 , "relation":"3" }
+]  
+}  

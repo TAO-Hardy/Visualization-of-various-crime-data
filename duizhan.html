@@ -1,0 +1,202 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Accountancy service records</title>
+<style>
+ 
+.axis path,
+.axis line{
+	fill: none;
+	stroke: black;
+	shape-rendering: crispEdges;
+}
+ 
+.axis text {
+	font-family: sans-serif;
+	font-size: 10px;
+}
+.MyRect {
+
+	}
+
+.MyText {
+		fill: white;
+		text-anchor: middle;
+	}
+</style>
+</head>
+<body>
+<script src="./d3.min.js" charset="utf-8"></script>
+ 
+	<script>
+	
+	var width=800;
+	var height=600;
+	
+	
+	var svg=d3.select("body")
+			.append("svg")
+			.attr("width",width)
+			.attr("height",height)
+ var dataset1 = [10, 20, 30, 40, 33, 24, 12, 5];
+	var dataset=[
+        { name: "Accounts Receivable" , 
+		  sales: [	{ year:"21/8/2011, Minerva Property Dev", profit: 75000},
+					{ year:"04/9/2011, Grosby Haulage Ltd.", profit: 26131 },
+					{ year:"21/9/2011, P. Calabrese(chauffeur)", profit: 0},
+					{ year:"10/10/2011, Hoven", profit: 1200 },
+					{ year:"21/11/2011, Angel Warehousing and Storage", profit: 42000},
+					{ year:"21/11/2011, S. Condiere", profit: 0},
+					{ year:"05/1/2011, H. Cesar (Ins. Prem.)", profit: 20000},
+					{ year:"05/1/2011, S. Condiere (Ins. Prem.)", profit: 20000},					
+					{ year:"06/2/2012, Exmouth Marina Valentine’s Gala", profit: 0},
+					{ year:"06/2/2012, Exmouth Marina Charity Drive", profit: 0},
+					{ year:"08/2/2012, Ajax Maritime Services", profit: 0},
+					{ year:"21/3/2012, D. Pico(chauffeur)", profit: 0},
+					{ year:"30/6/2012, Minerva Property Dev", profit: 75000},
+					{ year:"13/7/2012, Leeds Constabulary (Pico bail)", profit: 0},
+					{ year:"21/7/2012, D. Pico (chauffeur)", profit: 0},
+					{ year:"22/7/2012, Minton Group", profit: 150000},
+					{ year:"01/8/2012, Grosby Haulage", profit: 10000},
+					{ year:"05/8/2012, Angel Warehousing and Storage", profit: 35000},
+					{ year:"05/8/2012, S. Condiere", profit: 0},
+					{ year:"21/8/2012, D. Pico (chauffeur)", profit: 0 }] },
+					
+		{ name: "Accounts Payable" , 
+		  sales: [	{ year:"21/8/2011, Minerva Property Dev", profit: 0},
+					{ year:"04/9/2011, Grosby Haulage Ltd.", profit: 0},
+					{ year:"21/9/2011, P. Calabrese(chauffeur)", profit: 1500},
+					{ year:"10/10/2011, Hoven", profit: 0},
+					{ year:"21/11/2011, Angel Warehousing and Storage", profit: 15000},
+					{ year:"21/11/2011, S. Condiere", profit: 15000},					
+					{ year:"05/1/2011, H. Cesar (Ins. Prem.)", profit: 0},
+					{ year:"05/1/2011, S. Condiere (Ins. Prem.)", profit: 0},					
+					{ year:"06/2/2012, Exmouth Marina Valentine’s Gala", profit: 2000},
+					{ year:"06/2/2012, Exmouth Marina Charity Drive", profit: 2000},
+					{ year:"08/2/2012, Ajax Maritime Services", profit: 31000},
+					{ year:"21/3/2012, D. Pico(chauffeur)", profit: 1500},
+					{ year:"30/6/2012, Minerva Property Dev", profit: 0},
+					{ year:"13/7/2012, Leeds Constabulary (Pico bail)", profit: 5000},
+					{ year:"21/7/2012, D. Pico (chauffeur)", profit: 1500},
+					{ year:"22/7/2012, Minton Group", profit: 0},
+					{ year:"01/8/2012, Grosby Haulage", profit: 0},
+					{ year:"05/8/2012, Angel Warehousing and Storage", profit: 15000},
+					{ year:"05/8/2012, S. Condiere", profit: 15000},
+					{ year:"21/8/2012, D. Pico (chauffeur)", profit: 1500}] },
+		
+    ];
+ 
+    
+var stack = d3.layout.stack()
+					.values(function(d){ return d.sales; })
+					.x(function(d){ return d.year; })
+					.y(function(d){ return d.profit; });
+ 
+    var data=stack(dataset);
+ 	//console.log(d.profit);
+    var padding={left:60, right:80, top:30, bottom:200};
+    var xRange=width-padding.left-padding.right;
+ 
+    var xScale=d3.scale.ordinal()
+    			.domain(data[0].sales.map(function(d){
+    				return d.year;//Return year value
+    			}))
+    			.rangeBands([0,xRange],0.3);
+				
+ 
+    var maxProfit=d3.max(data[data.length-1].sales,function(d){
+    	return d.y0+d.y;
+    });
+ 
+    var yRange=height-padding.top-padding.bottom;
+ 
+    var yScale=d3.scale.linear()
+    			.domain([0,maxProfit])
+    			.range([0,yRange]);
+ 
+ 
+    var color=d3.scale.category10();
+ 
+    //Adding grouping elements
+    var groups=svg.selectAll("g")
+    			.data(data)
+    			.enter()
+    			.append("g")
+    			.style("fill",function(d,i){
+    				return color(i);
+    			});
+ 
+   	var rects=groups.selectAll(".MyRect")
+   					.data(function(d){
+   						return d.sales;
+   					})
+   					.enter()
+   					.append("rect")
+					.attr("class","MyRect")
+   					.attr("x",function(d){
+   						return xScale(d.year);
+   					})
+   					.attr("y",function(d){
+   						return yRange-yScale(d.y0+d.y);
+   					})
+   					.attr("width",function(d){
+   						return xScale.rangeBand();
+   					})
+   					.attr("height",function(d){
+   						return yScale(d.y);
+   					})
+					
+   					.attr("transform","translate("+padding.left+","+padding.top+")");
+
+   	//Add coordinate axis
+   	var xAxis=d3.svg.axis()
+   				.scale(xScale)
+   				.orient("bottom");
+ 
+   	yScale.range([yRange,0]);
+ 
+   	var yAxis=d3.svg.axis()
+   				.scale(yScale)
+   				.orient("left");
+ 
+   	svg.append("g")
+			.attr("class","axis")
+			.attr("transform","translate(" + padding.left + "," + (height - padding.bottom) +  ")")
+			.call(xAxis)
+			.selectAll("text")
+			.attr("transform", "rotate(-60)")
+			.style('font-size', '10px')
+			.style("text-anchor", "end");
+
+   	svg.append("g")
+   		.attr("class","axis")
+   		.attr("transform","translate("+padding.left+","+(height-padding.bottom-yRange)+")")
+   		.call(yAxis);
+ 
+   	var labHeight=50;
+   	var labRadius=10;
+ 
+   	var labelCircle=groups.append("circle")
+   						.attr("cx",function(d){
+   							return width-padding.right*1.48;
+   						})
+   						.attr("cy",function(d,i){
+   							return padding.top*1+labHeight*i;
+   						})
+   						.attr("r",labRadius);
+ 
+   	var labelText=groups.append("text")
+   						.attr("x",function(d){
+   							return width-padding.right*2.2;
+   						})	
+   						.attr("y",function(d,i){
+   							return padding.top*1.8+labHeight*i;
+   						})
+   						.attr("dy",labRadius/2)
+   						.text(function(d){
+   							return d.name;
+   						})
+	</script>
+ 
+</body>
+</html>

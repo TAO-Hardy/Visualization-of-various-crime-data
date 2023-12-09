@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="./d3.v5.min.js"></script>
+</head>
+<body>
+<div  style="text-align: center">
+<button id="btn" data-level="1" x="20" y="40">Sarti</button>
+<button id="btn1" data-level="2">David Cobo</button>
+<button id="btn2" data-level="3">J. Ajachinsky</button>
+<button id="btn3" data-level="4">Calabrese</button>
+<button id="btn4" data-level="5">Return</button>
+
+</div>
+<div  style="text-align: center">
+    <p>Jennifer Garlica who is Grosby's sister-in-law and whose husband was killed last year in what looks like a gangland hit; Vanessa Munoz who is the assistant manager of Exmouth Marina;</p>
+    <p> Martina Sarti who works at the marina and is the girlfriend of the marina manager(Xavier David);</p>
+    <p>Pierre Pasquidini who lives in Roskoff and travels regularly to the UK;</p>
+    <p>Kenny Chiappe who drives a mini-cabin Leeds;</p>
+    <p>Jake Ajachinsky who is a petty criminal;</p>
+    <p>HDavid Pico who is Jake's bestfriend, is also a petty criminal and has a tempestuous on-off relationship with Jake’s twin sister, Denise Ajachinsky, who is also a suspect.</p>
+
+</div>
+<div id="canvas">
+</div>
+
+</body>
+</html>
+<script>
+    let canvas = d3.select('#canvas');
+
+        d3.selectAll('button').on('click',function () {
+        let btn = d3.select(this);
+        if (btn.attr('data-level') === '1'){
+            canvas.html("").append('img').attr('src','relationInfo/Sarti.JPG') .style('width','450px') .style('height','450px');
+            canvas.append('img').attr('src','relationInfo/Sarti3.JPG' ) .style('width','450px') .style('height','450px');
+            canvas.append('img').attr('src','relationInfo/sarti2.JPG' ) .style('width','450px') .style('height','450px');
+            canvas.append('img').attr('src','relationInfo/sarti4.JPG' ).style('width','450px') .style('height','450px')
+        }
+        else if(btn.attr('data-level') === '2') {
+            canvas.html("").append('img').attr('src', 'relationInfo/David Cobo.JPG').style('width','450px') .style('height','450px');
+            canvas.append('img').attr('src', 'relationInfo/David Pico and , D.Ajachinsky.JPG').style('width','450px') .style('height','450px');
+            canvas.append('img').attr('src', 'relationInfo/J.Ajachinsky and David Pico.JPG').style('width','450px') .style('height','450px');
+        }
+        else if(btn.attr('data-level') === '3') {
+            canvas.html("").append('img').attr('src', 'relationInfo/J.Ajachinsky and David Pico.JPG').style('width','450px') .style('height','450px');
+            canvas.append('img').attr('src', 'relationInfo/J. Ajachinsky.JPG').style('width','450px') .style('height','450px');
+            canvas.append('img').attr('src', 'relationInfo/J.Ajachinsky1.JPG').style('width','450px') .style('height','450px');
+        }
+        else if(btn.attr('data-level') === '4') {
+            canvas.html("").append('img').attr('src', 'relationInfo/Calabrese.JPG').style('width','450px') .style('height','450px');
+            canvas.append('img').attr('src', 'relationInfo/sarti4.JPG').style('width','450px') .style('height','450px');
+        }
+        else if(btn.attr('data-level') === '5') {
+            canvas.html("")
+        }
+    })
+</script>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #root{
+            position: relative;
+            left: 50%;
+            display: inline-block;
+            transform: translate(-50%,0);
+        }
+    </style>
+    <script src="d3.v5.min.js"></script>
+</head>
+<body>
+<div id="root">
+    <h1 id="title" style="text-align: center"></h1>
+    <svg id="timeSvg" width="1800" height="100">
+        <defs>
+            <radialGradient id="grey_blue" cx="50%" cy="50%" r="50%"
+                            fx="50%" fy="50%">
+                <stop offset="0%" style="stop-color:#ffffff;"/>
+                <stop offset="100%" style="stop-color:#00a2e8;"/>
+            </radialGradient>
+            <radialGradient id="grey_yellow" cx="50%" cy="50%" r="50%"
+                            fx="50%" fy="50%">
+                <stop offset="0%" style="stop-color:#ffffff;"/>
+                <stop offset="100%" style="stop-color:#ffc90e;"/>
+            </radialGradient>
+        </defs>
+    </svg>
+    <svg id="draw" width="1800" height="700"/>
+</div>
+</body>
+</html>
+<script>
+    let name = 'Bertz Van Rental';
+
+    d3.select("#title").html(name);
+
+    function reDrawZC(name){
+        d3.csv(`data/${name}.csv`,(row)=>{
+            row.date_phone = new Date(row.Date);
+            row.time = new Date(`${row.Date} ${row.Time}`);
+            row.dateTime = `${row.Date} ${row.Time}`;
+            row.duration = +row.Duration.replace("days","");
+            row.start = new Date(`${row.Date} ${row.Time}`);
+            let startMins = row.start.getMinutes();
+            let startHour = row.start.getHours();
+
+            let endMins = startMins + row.duration;
+
+            let endHour = startHour + Math.floor(endMins/60);
+            let endMin = endMins % 60;
+
+            let end = new Date(row.start.toString());
+            end.setHours(endHour);
+            end.setMinutes(endMin);
+
+            row.end = end;
+
+            return row;
+        })
+            .then(data=>{
+                console.log(data);
+
+                //small to large orders according to time.
+                data.sort((a,b)=>(a.time - b.time));
+                let dataGroupByDate = d3.nest().key(d=>d.date_phone).entries(data);
+                let margin = {
+                    left: 100,
+                    right: 200,
+                    top: 50,
+                    bottom: 100
+                };
+
+                let svg = d3.select('#draw');
+                let w = +svg.attr('width') - margin.left - margin.right;
+                let h = +svg.attr('height') - margin.top - margin.bottom;
+                svg.html("");
+
+                //setting timeline
+
+                let timeScale = d3.scaleBand().domain(dataGroupByDate.map(d=>d.key)).range([0,w]).padding(0.1);
+                let __t = d3.select('#timeSvg');
+                if (__t.select('#g').size()>0){
+                    __t.select('#g').remove();
+                }
+
+                let timeG = __t.append('g').attr('id','g').attr('transform',`translate(${margin.left}, 0)`);
+                timeG.append('line')
+                    .attr('x1',0)
+                    .attr('y1',50)
+                    .attr('x2',w)
+                    .attr('y2',50)
+                    .style('stroke', 'red')
+                    .style('stroke-dasharray', '5,5');
+
+                timeG.selectAll('.year').data(dataGroupByDate)
+                    .enter().append('circle')
+                    .classed('year',true)
+                    .attr('cx', d=>timeScale(d.key)+timeScale.bandwidth()/2)
+                    .attr('cy', 50)
+                    .attr('r',12)
+                    .on('click',function(d){
+                        timeG.selectAll('.year').style('fill','url(#grey_blue)');
+                        d3.select(this).style('fill','url(#grey_yellow)');
+                        //reDraw(dataGroupByYear, +d.key);
+                        reDraw(d.values);
+                    })
+                    .style('fill', (d,i)=> i===0? 'url(#grey_yellow)' : 'url(#grey_blue)');
+
+                timeG.selectAll('.text').data(dataGroupByDate)
+                    .enter().append('text')
+                    .classed('text',true)
+                    .attr('x', d=>timeScale(d.key)+timeScale.bandwidth()/2)
+                    .attr('y', 80)
+                    .style('text-anchor','middle')
+                    .style("font-size","15px")
+                    .html(d=>{
+                        let date = new Date(d.key);
+                        return `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`
+                    });
+
+                //plotting the rental record
+                function reDraw(data) {
+                    svg.html("");
+                    let rootG = svg.append('g').attr('transform',`translate(${margin.left}, ${margin.top})`);
+
+                    let total = d3.sum(data, d=>d.duration);
+                    let deltaW = w / total;
+
+                    let xScale = d3.scaleLinear().domain([data[0].time, data[data.length-1].end]).range([0,w]);
+                    let xScale2 = d3.scaleBand().domain(data.map(d=>d.dateTime)).range([0,w]).padding(0.1);
+                    let yScale = d3.scaleBand().domain(d3.range(1,data.length+1)).range([h,0]);
+
+                    let update = rootG.selectAll('.rect').data(data);
+
+                    for(let i=0, len = data.length; i < len; i++){
+                        let d = data[i];
+                        let width = xScale(d.end) - xScale(d.start);
+                        let currentX= xScale(d.time);
+                        rootG.append('rect')
+                            .attr('x', currentX)
+                            .attr('y', yScale(i+1))
+                            .attr('width',width)
+                            .attr('height', yScale.bandwidth())
+                            .style('fill', '#00A2E8');
+                        rootG.append('text')
+                            .attr('x', currentX)
+                            .attr('y', yScale(i+1))
+                            .style('font-size', '13px')
+                            .html(()=>{
+                                let y = yScale(i+1);
+                                let x = xScale(d.end);
+                                let deltaY = yScale.bandwidth()/3;
+
+                                let html = `
+                        <tspan x="${x}" y="${y+deltaY}" data-name="${d.To}">To: ${d.To}</tspan>
+                        <tspan x="${x}" y="${y+deltaY*2}">Duration: ${d.Duration}</tspan>
+                        <tspan x="${x}" y="${y+deltaY*3}">Location: ${d['Number / Location']}</tspan>`;
+
+                                return html;
+                            });
+                        d3.selectAll('tspan').on('click',function () {
+                            reDrawZC(d3.select(this).attr('data-name'));
+                        });
+
+                        //Draw the scale on the X axis.
+                        rootG.append('line')
+                            .attr('x1',currentX+width/2)
+                            .attr('y1', h)
+                            .attr('x2',currentX+width/2)
+                            .attr('y2', h+10)
+                            .style("stroke",'black');
+
+                        //Plotting time on the X axis
+                        rootG.append('text')
+                            .attr('x',currentX+width/2)
+                            .attr('y', h+20)
+                            .style('font-size', '10px')
+                            .style("text-anchor",'end')
+                            .style('transform','rotate(-30deg)')
+                            .style('transform-origin',`${currentX+width/2}px ${h+20}px`)
+                            .html(d.dateTime);
+                        currentX+=width;
+                    }
+
+                    rootG.append('line')
+                        .attr('x1',0)
+                        .attr('y1', h)
+                        .attr('x2',w+margin.right)
+                        .attr('y2', h)
+                        .style("stroke",'black');
+                    rootG.append('g')
+                        .call(d3.axisLeft(yScale));
+                }
+
+                reDraw(dataGroupByDate[0].values);
+            })
+    }
+
+    reDrawZC(name);
+
+
+</script>
